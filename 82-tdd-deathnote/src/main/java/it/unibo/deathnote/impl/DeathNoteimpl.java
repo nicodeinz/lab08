@@ -74,20 +74,36 @@ public class DeathNoteimpl implements DeathNote{
 
     @Override
     public String getDeathCause(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDeathCause'");
+
+        for (int i = 0; i < deaths.size(); i++){
+            if(deaths.get(i).name.equals(name)){
+                return deaths.get(i).causeDeath;
+            }
+        }
+            throw new IllegalArgumentException("this person is not in the list");
+
     }
 
     @Override
     public String getDeathDetails(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDeathDetails'");
+
+        for (int i = 0; i < deaths.size(); i++){
+            if(deaths.get(i).name.equals(name)){
+                return deaths.get(i).details;
+            }
+        }
+        throw new IllegalArgumentException("this person is not in the list");
     }
 
     @Override
     public boolean isNameWritten(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isNameWritten'");
+
+        for (final Person p : deaths) {
+            if(p.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
     
 }
