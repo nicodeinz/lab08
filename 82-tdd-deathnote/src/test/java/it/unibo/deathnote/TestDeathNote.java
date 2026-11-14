@@ -22,13 +22,18 @@ class TestDeathNote {
         this.deathNote = new DeathNoteimpl();
     }
     @Test 
-    public void NotExistingRule() {
+    public void notExistingRule() {
         assertThrows(IllegalArgumentException.class, () -> deathNote.getRule(0));
         assertThrows(IllegalArgumentException.class, () -> deathNote.getRule(50));
+        assertThrows(IllegalArgumentException.class, () -> deathNote.getRule(-1));
+
+        final var exception = assertThrows(IllegalArgumentException.class, () -> deathNote.getRule(0));
+        assertNotNull(exception);
+        assertFalse(exception.getMessage().isBlank());       
     }
 
     @Test
-    public void NullRule(){
+    public void nullRule(){
         for(int i = 1; i <= DeathNote.RULES.size(); i++){
             final String rule = deathNote.getRule(i);
             assertNotNull(rule);
@@ -37,18 +42,18 @@ class TestDeathNote {
     }
 
     @Test 
-    public void TestWrittenPerson(){
+    public void testWrittenPerson(){
         assertFalse(deathNote.isNameWritten("marco"));
 
         deathNote.writeName("marco");
         assertTrue(deathNote.isNameWritten("marco"));
 
         assertFalse(deathNote.isNameWritten("luca"));
-        assertFalse(deathNote.isNameWritten(" "));        
+        assertFalse(deathNote.isNameWritten(""));        
     }
 
     @Test 
-    public void TestDeathCause() throws InterruptedException{
+    public void testDeathCause() throws InterruptedException{
         assertThrows(IllegalStateException.class, () -> deathNote.writeDeathCause("cancer"));
         deathNote.writeName("marco");
         
@@ -67,20 +72,21 @@ class TestDeathNote {
     }
 
     @Test 
-    public void TestDetails() throws InterruptedException{
+    public void testDetails() throws InterruptedException{
         assertThrows(IllegalStateException.class, () -> deathNote.writeDetails("really dead"));
 
         deathNote.writeName("marco");
 
         assertEquals("", deathNote.getDeathDetails("marco"));
+        deathNote.writeDeathCause("cancer");
 
-        assertTrue(deathNote.writeDeathCause("ran for too long"));
-        assertEquals("ran for too long", deathNote.getDeathCause("marco"));
+        assertTrue(deathNote.writeDetails("ran for too long"));
+        assertEquals("ran for too long", deathNote.getDeathDetails("marco"));
 
         deathNote.writeName("alessio");
         Thread.sleep(6100);
 
-        deathNote.writeDeathCause("he descovered he could not fly");
-        assertEquals("ran for too long", deathNote.getDeathCause("marco"));
+        deathNote.writeDetails("he descovered he could not fly");
+        assertEquals("", deathNote.getDeathDetails("alessio"));
     }
 }

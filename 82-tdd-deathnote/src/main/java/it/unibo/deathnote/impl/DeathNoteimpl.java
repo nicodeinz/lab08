@@ -20,7 +20,7 @@ public class DeathNoteimpl implements DeathNote{
         }
     }
     private List<Person> deaths = new ArrayList<>();
-    private long TimeName;
+    private long timeName;
     private long timeCause;
     
 
@@ -40,7 +40,8 @@ public class DeathNoteimpl implements DeathNote{
         }
 
         deaths.add(new Person(name));
-        this.TimeName = System.currentTimeMillis();
+        this.timeName = System.currentTimeMillis();
+        this.timeCause = this.timeName;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class DeathNoteimpl implements DeathNote{
 
         timeCause = System.currentTimeMillis();
 
-        if(timeCause - this.TimeName <= 40){
+        if(timeCause - this.timeName <= 40){
             this.deaths.get(this.deaths.size() - 1).causeDeath = cause;
             return true;
         }
