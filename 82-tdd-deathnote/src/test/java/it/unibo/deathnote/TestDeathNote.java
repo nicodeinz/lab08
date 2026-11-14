@@ -1,5 +1,50 @@
 package it.unibo.deathnote;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import it.unibo.deathnote.api.DeathNote;
+import it.unibo.deathnote.impl.DeathNoteimpl;
+
 class TestDeathNote {
+
+    private DeathNoteimpl deathNote;
+
+
+    @BeforeEach 
+    void setUp(){
+        this.deathNote = new DeathNoteimpl();
+    }
+    @Test 
+    public void NotExistingRule() {
+        assertThrows(IllegalArgumentException.class, () -> deathNote.getRule(0));
+        assertThrows(IllegalArgumentException.class, () -> deathNote.getRule(50));
+    }
+
+    @Test
+    public void NullRule(){
+        for(int i = 1; i <= DeathNote.RULES.size(); i++){
+            final String rule = deathNote.getRule(i);
+            assertNotNull(rule);
+            assertFalse(rule.isBlank());
+        }
+    }
+
+    @Test 
+    public void TestWrittenPerson(){
+        assertFalse(deathNote.isNameWritten("marco"));
+
+        deathNote.writeName("marco");
+        assertTrue(deathNote.isNameWritten("marco"));
+
+        assertFalse(deathNote.isNameWritten("luca"));
+        assertFalse(deathNote.isNameWritten(" "));        
+    }
 
 }
