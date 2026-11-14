@@ -47,4 +47,23 @@ class TestDeathNote {
         assertFalse(deathNote.isNameWritten(" "));        
     }
 
+    @Test 
+    public void TestDeathCause() throws InterruptedException{
+        assertThrows(IllegalStateException.class, () -> deathNote.writeDeathCause("cancer"));
+        deathNote.writeName("marco");
+        
+        assertEquals("Heart attack", deathNote.getDeathCause("marco"));
+
+        deathNote.writeName("alessio");
+        assertTrue(deathNote.writeDeathCause("karting accident"));
+
+        assertEquals("karting accident", deathNote.getDeathCause("alessio"));
+
+        Thread.sleep(100);
+
+        deathNote.writeDeathCause("suicide bombing");
+
+        assertEquals("karting accident", deathNote.getDeathCause("alessio"));
+    }
+
 }
